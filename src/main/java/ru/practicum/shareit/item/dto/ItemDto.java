@@ -3,7 +3,7 @@ package ru.practicum.shareit.item.dto;
 import ru.practicum.shareit.user.dto.UserDto;
 
 // DTO для возврата данных вещи
-public record ItemDto (
+public record ItemDto(
         // Уникальный идентификатор вещи
         Long id,
 
