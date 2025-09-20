@@ -1,9 +1,7 @@
 package ru.practicum.shareit.item.controller;
 
 import jakarta.validation.Valid;
-import ru.practicum.shareit.item.dto.ItemCreateDto;
-import ru.practicum.shareit.item.dto.ItemDto;
-import ru.practicum.shareit.item.dto.ItemUpdateDto;
+import ru.practicum.shareit.item.dto.*;
 import ru.practicum.shareit.item.service.ItemService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -40,26 +38,33 @@ public class ItemController {
         itemService.deleteItem(userId, itemId);
     }
 
-    // Получение вещи по ID
+    // Получение вещи по ID (с бронированиями и комментариями)
     @GetMapping("/{itemId}")
-    public ItemDto getItemById(@PathVariable Long itemId) {
-        return itemService.getItemById(itemId);
+    public ItemWithBookingsDto getItemById(@RequestHeader("X-Sharer-User-Id") Long userId, @PathVariable Long itemId) {
+        return itemService.getItemWithBookingsById(userId, itemId);
     }
 
-    // Получение всех вещей владельца
+    // Получение всех вещей владельца (с бронированиями)
     @GetMapping
-    public List<ItemDto> getItemsByOwner(@RequestHeader("X-Sharer-User-Id") Long userId,
-                                         @RequestParam(defaultValue = "0") Integer from,
-                                         @RequestParam(defaultValue = "10") Integer size) {
-        return itemService.getItemsByOwner(userId).stream()
-                .skip(from)
-                .limit(size)
-                .toList();
+    public List<ItemWithBookingsDto> getItemsByOwner(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                                     @RequestParam(defaultValue = "0") Integer from,
+                                                     @RequestParam(defaultValue = "10") Integer size) {
+        return itemService.getItemsWithBookingsByOwner(userId, from, size);
     }
 
     // Поиск вещей
     @GetMapping("/search")
-    public List<ItemDto> searchItems(@RequestParam String text) {
-        return itemService.searchItems(text);
+    public List<ItemDto> searchItems(@RequestParam String text,
+                                     @RequestParam(defaultValue = "0") Integer from,
+                                     @RequestParam(defaultValue = "10") Integer size) {
+        return itemService.searchItems(text, from, size);
+    }
+
+    // Добавление комментария
+    @PostMapping("/{itemId}/comment")
+    public CommentDto addComment(@RequestHeader("X-Sharer-User-Id") Long userId,
+                                 @PathVariable Long itemId,
+                                 @Valid @RequestBody CommentCreateDto commentDto) {
+        return itemService.addComment(userId, itemId, commentDto);
     }
 }

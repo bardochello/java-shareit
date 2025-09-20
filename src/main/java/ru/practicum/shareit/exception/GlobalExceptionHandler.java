@@ -22,6 +22,20 @@ public class GlobalExceptionHandler {
         return new ErrorResponse(ex.getMessage());
     }
 
+    // Обработка исключений ValidationException(400)
+    @ExceptionHandler(ValidationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ErrorResponse handleValidationException(ValidationException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
+
+    //Обработка AccessDeniedException(403)
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleAccessDeniedException(AccessDeniedException ex) {
+        return new ErrorResponse(ex.getMessage());
+    }
+
     // Обработка остальных исключений (500)
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
