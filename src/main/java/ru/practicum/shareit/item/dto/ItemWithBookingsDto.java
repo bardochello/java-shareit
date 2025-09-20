@@ -1,7 +1,7 @@
 package ru.practicum.shareit.item.dto;
 
-import ru.practicum.shareit.booking.dto.BookingShortDto;  // Added import
-import java.util.List;  // Added import (instead of java.util.List)
+import ru.practicum.shareit.booking.dto.BookingShortDto;
+import java.util.List;
 
 // DTO для вещи с бронированиями и комментариями
 public record ItemWithBookingsDto(
@@ -9,8 +9,8 @@ public record ItemWithBookingsDto(
         String name,
         String description,
         Boolean available,
-        BookingShortDto lastBooking,  // Now short name
-        BookingShortDto nextBooking,  // Now short name
-        List<CommentDto> comments  // Now short name with import
+        BookingShortDto lastBooking,
+        BookingShortDto nextBooking,
+        List<CommentDto> comments
 ) {
 }
