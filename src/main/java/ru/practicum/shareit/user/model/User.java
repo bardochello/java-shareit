@@ -1,22 +1,23 @@
 package ru.practicum.shareit.user.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 // Сущность пользователя
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
+@Table(name = "users")
 public class User {
-    // Уникальный идентификатор пользователя
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Имя пользователя
+    @Column(name = "name", nullable = false)
     private String name;
 
-    // Email пользователя
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 }
