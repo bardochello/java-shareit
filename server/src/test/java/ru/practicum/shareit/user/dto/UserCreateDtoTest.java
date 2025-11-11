@@ -15,14 +15,14 @@ class UserCreateDtoTest {
     private JacksonTester<UserCreateDto> json;
 
     @Test
-    void serialize_shouldHandleEmail() throws Exception {
+    void serializeShouldHandleEmail() throws Exception {
         UserCreateDto dto = new UserCreateDto("Name", "email@test.com");
 
         assertThat(json.write(dto)).extractingJsonPathStringValue("$.email").isEqualTo("email@test.com");
     }
 
     @Test
-    void serialize_shouldHandleName() throws Exception {
+    void serializeShouldHandleName() throws Exception {
         UserCreateDto dto = new UserCreateDto("Test Name", "email@test.com");
 
         assertThat(json.write(dto)).extractingJsonPathStringValue("$.name").isEqualTo("Test Name");

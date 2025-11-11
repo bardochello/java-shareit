@@ -38,7 +38,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void createUser_shouldSaveAndReturnDto() {
+    void createUserShouldSaveAndReturnDto() {
         UserDto result = userService.createUser(createDto);
 
         assertThat(result.id()).isNotNull();
@@ -47,7 +47,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void createUser_duplicateEmail_shouldThrowConflict() {
+    void createUserWhenDuplicateEmailThenThrowConflict() {
         userService.createUser(createDto);
 
         assertThatThrownBy(() -> userService.createUser(createDto))
@@ -56,7 +56,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void updateUser_shouldUpdateNameAndEmail() {
+    void updateUserShouldUpdateNameAndEmail() {
         UserDto created = userService.createUser(createDto);
         UserUpdateDto updateDto = new UserUpdateDto("New Name", "new@email.com");
 
@@ -67,7 +67,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void updateUser_duplicateEmail_shouldThrowConflict() {
+    void updateUserWhenDuplicateEmailThenThrowConflict() {
         userService.createUser(createDto);
         UserCreateDto other = new UserCreateDto("Other", "other@email.com");
         UserDto otherCreated = userService.createUser(other);
@@ -80,7 +80,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void updateUser_invalidId_shouldThrowNotFound() {
+    void updateUserWhenInvalidIdThenThrowNotFound() {
         UserUpdateDto updateDto = new UserUpdateDto("New", null);
 
         assertThatThrownBy(() -> userService.updateUser(999L, updateDto))
@@ -89,7 +89,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void deleteUser_shouldRemoveUser() {
+    void deleteUserShouldRemoveUser() {
         UserDto created = userService.createUser(createDto);
 
         userService.deleteUser(created.id());
@@ -98,7 +98,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getUserById_shouldReturnDto() {
+    void getUserByIdShouldReturnDto() {
         UserDto created = userService.createUser(createDto);
 
         UserDto result = userService.getUserById(created.id());
@@ -107,14 +107,14 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getUserById_invalidId_shouldThrowNotFound() {
+    void getUserByIdWhenInvalidIdThenThrowNotFound() {
         assertThatThrownBy(() -> userService.getUserById(999L))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Пользователь не найден");
     }
 
     @Test
-    void getAllUsers_shouldReturnList() {
+    void getAllUsersShouldReturnList() {
         userService.createUser(createDto);
         UserCreateDto other = new UserCreateDto("Other", "other@email.com");
         userService.createUser(other);
@@ -125,7 +125,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getUserOrThrow_shouldReturnUser() {
+    void getUserOrThrowShouldReturnUser() {
         UserDto created = userService.createUser(createDto);
 
         User result = userService.getUserOrThrow(created.id());
@@ -134,7 +134,7 @@ class UserServiceImplTest {
     }
 
     @Test
-    void getUserOrThrow_invalidId_shouldThrowNotFound() {
+    void getUserOrThrowWhenInvalidIdThenThrowNotFound() {
         assertThatThrownBy(() -> userService.getUserOrThrow(999L))
                 .isInstanceOf(NotFoundException.class)
                 .hasMessage("Пользователь не найден");
