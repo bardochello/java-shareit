@@ -19,6 +19,7 @@ import ru.practicum.shareit.item.dto.ItemUpdateDto;
 import ru.practicum.shareit.item.dto.ItemWithBookingsDto;
 import ru.practicum.shareit.item.repository.ItemRepository;
 import ru.practicum.shareit.request.dto.ItemRequestCreateDto;
+import ru.practicum.shareit.request.dto.ItemRequestDto;
 import ru.practicum.shareit.request.service.ItemRequestService;
 import ru.practicum.shareit.user.model.User;
 import ru.practicum.shareit.user.repository.UserRepository;
@@ -77,13 +78,16 @@ class ItemServiceImplTest {
 
     @Test
     void addItemWithRequestIdShouldLinkToRequest() {
+        // Создаем запрос и получаем его ID
         ItemRequestCreateDto reqDto = new ItemRequestCreateDto("Need item");
-        itemRequestService.addRequest(booker.getId(), reqDto);
-        createDto = new ItemCreateDto("Item", "Desc", true, 1L); // Assume req id=1
+        ItemRequestDto createdRequest = itemRequestService.addRequest(booker.getId(), reqDto);
 
-        ItemDto result = itemService.addItem(owner.getId(), createDto);
+        // Используем реальный ID созданного запроса
+        ItemCreateDto itemWithRequest = new ItemCreateDto("Item", "Desc", true, createdRequest.id());
 
-        assertThat(result.requestId()).isEqualTo(1L);
+        ItemDto result = itemService.addItem(owner.getId(), itemWithRequest);
+
+        assertThat(result.requestId()).isEqualTo(createdRequest.id());
     }
 
     @Test
